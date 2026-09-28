@@ -1,4 +1,5 @@
 import path from "node:path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
 export default {
   entry: {
@@ -6,6 +7,7 @@ export default {
   },
   output: {
     filename: "[name].bundle.js",
+    htmlFilename: "[name].html",
     path: path.resolve(import.meta.dirname, "dist"),
     clean: true,
     html: {
