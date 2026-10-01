@@ -1,11 +1,22 @@
 export const createTodo = (title, description, dueDate, priority, notes) => {
+  const _id = crypto.randomUUID();
+  let _completed = false;
+
+  // API
   return {
-    id: crypto.randomUUID(),
     title,
     description,
-    dueDate: dueDate || new Date().toLocaleDateString(),
+    dueDate: dueDate || new Date(),
     priority,
     notes,
-    completed: false,
+    get completed() {
+      return _completed;
+    },
+    set completed(value) {
+      _completed = value;
+    },
+    getId() {
+      return _id;
+    },
   };
 };
