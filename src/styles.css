@@ -24,14 +24,3 @@
 body {
   height: 100vh;
 }
-
-.container {
-  width: 80vw;
-  margin: 0 auto;
-}
-
-.copy {
-  height: 50px;
-  text-align: center;
-  margin-top: auto;
-}
