@@ -12,12 +12,37 @@
     <div class="container">
 
         <header>
+            <div class="logo">Logo</div>
         </header>
 
+        <aside>
+            <section class="projects">
+                <header class="projects-header">
+                    <h3>Projects</h3>
+                </header>
+                <form id="project-form">
+                    <input type="text" id="project-name" name="project-name" placeholder="Project Name" required>
+                    <button type="submit">Add Project</button>
+                </form>
+                <div class="project-list"></div>
+            </section>
+        </aside>
+
         <main>
+            <section class="todos">
+                <header class="todo-header">
+                    <h3>Todo Items for: <span id="active-project">None</span></h3>
+                </header>
+                <form id="todo-form">
+                    <input type="text" id="todo-title" name="todo-title" placeholder="Add a todo item" required>
+                    <button type="submit">Add Todo</button>
+                </form>
+                <div class="todos-list"></div>
+            </section>
         </main>
 
         <footer>
+            <div class="copy">Copyright info</div>
         </footer>
 
     </div>
