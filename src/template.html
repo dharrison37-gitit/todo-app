@@ -11,8 +11,9 @@
 
     <div class="container">
 
-        <header>
-            <div class="logo">Logo</div>
+        <header class="site-header">
+            <div class="logo"></div>
+            <div class="logo-text">factum</div>
         </header>
 
         <aside>
@@ -30,19 +31,30 @@
 
         <main>
             <section class="todos">
-                <header class="todo-header">
+                <header class="todos-header">
                     <h3>Todo Items for: <span id="active-project">None</span></h3>
                 </header>
-                <form id="todo-form">
-                    <input type="text" id="todo-title" name="todo-title" placeholder="Add a todo item" required>
-                    <button type="submit">Add Todo</button>
-                </form>
+                <dialog id="todo-dialog">
+                    <form id="todo-form">
+                        <input type="text" id="title" name="title" placeholder="Add a todo item" required>
+                        <textarea name="description" id="description" cols="10" rows="3"
+                            placeholder="Description of todo item"></textarea>
+                        <input type="date" name="due-date" id="due-date">
+                        <select name="priorities" id="priorities">
+                            <option value="low" selected>Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                        <textarea name="notes" id="notes" cols="10" rows="3" placeholder="Any notes..."></textarea>
+                        <button type="submit">Add Todo</button>
+                    </form>
+                </dialog>
                 <div class="todos-list"></div>
             </section>
         </main>
 
         <footer>
-            <div class="copy">Copyright info</div>
+            <div class="copy">Copyright &copy; <em>factum</em> | D. Harrison 2026</div>
         </footer>
 
     </div>

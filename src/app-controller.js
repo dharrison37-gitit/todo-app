@@ -16,12 +16,10 @@ export const appController = (() => {
     projects.push(newProject);
     localStorage.setItem("projects", JSON.stringify(projects));
     currentProjectID = newProject.id;
-    // renderProjects();
     renderApp();
   };
 
   const renderProjects = () => {
-    console.log("PROJECTS:", JSON.stringify(projects, null, 2));
     const activeProject = document.querySelector("#active-project");
     const projectsList = document.querySelector(".project-list");
     projectsList.textContent = "";
@@ -36,6 +34,15 @@ export const appController = (() => {
       if (project.id === currentProjectID) {
         projectName.classList.add("active");
         activeProject.textContent = project.name;
+
+        const addButton = document.createElement("button");
+        addButton.classList.add("button", "add-button");
+        addButton.textContent = "Add Todo";
+        activeProject.appendChild(addButton);
+
+        addButton.addEventListener("click", () => {
+          document.querySelector("#todo-dialog").showModal();
+        });
       }
 
       projectName.addEventListener("click", (e) => {
@@ -53,9 +60,49 @@ export const appController = (() => {
 
     projectTodos.forEach((todo) => {
       const todoItem = document.createElement("div");
-      todoItem.classList.add("todo-item");
+      todoItem.setAttribute("data-id", todo.id);
+      todoItem.classList.add("todo-item", "accordian-header");
       todoItem.textContent = todo.title;
+      // const deleteButton = document.createElement("button");
+      // deleteButton.classList.add("delete-button");
+      // deleteButton.textContent = "X";
+      // todoItem.appendChild(deleteButton);
       todosList.appendChild(todoItem);
+
+      const dueDateToDate = new Date(todo.dueDate);
+      const accordianContent = document.createElement("div");
+      const description = document.createElement("div");
+      const dueDate = document.createElement("div");
+      const priority = document.createElement("div");
+      const notes = document.createElement("div");
+
+      accordianContent.classList.add("accordian-content");
+      description.textContent = `Desription: ${todo.description}`;
+      dueDate.textContent = `Due Date: ${dueDateToDate.toLocaleDateString()}`;
+      priority.textContent = `Priority: ${todo.priority}`;
+      notes.textContent = `Notes: ${todo.notes}`;
+
+      accordianContent.appendChild(description);
+      accordianContent.appendChild(dueDate);
+      accordianContent.appendChild(priority);
+      accordianContent.appendChild(notes);
+
+      todosList.appendChild(accordianContent);
+
+      todoItem.addEventListener("click", (e) => {
+        console.log(e.target.getAttribute("data-id"));
+
+        accordianContent.classList.toggle("accordian-active");
+        // if (accordianContent.style.display === "grid") {
+        //   accordianContent.style.display = "none";
+        // } else {
+        //   accordianContent.style.display = "grid";
+        // }
+
+        console.log(todo.description, todo.dueDate, todo.priority, todo.notes);
+        // do something with this todo item
+        // update it... delete it... mark it completed...
+      });
     });
   };
 
