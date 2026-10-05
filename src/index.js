@@ -33,5 +33,3 @@ todoForm.addEventListener("submit", (e) => {
   todoForm.reset();
   document.querySelector("#todo-dialog").close();
 });
-
-appController.renderApp();
