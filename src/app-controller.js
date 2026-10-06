@@ -207,7 +207,6 @@ export const appController = (() => {
     initEventListeners();
     if (projects.length === 0) {
       addProject("Default");
-      defaultProjectId = projects[0].id;
     } else {
       renderApp();
     }
