@@ -16,49 +16,31 @@
             <div class="logo-text">factum</div>
         </header>
 
-        <aside>
-            <section class="projects">
-                <header class="projects-header">
-                    <h3>Projects</h3>
-                </header>
-                <form id="project-form">
-                    <input type="text" id="project-name" name="project-name" placeholder="Project Name" required>
-                    <button type="submit">Add Project</button>
-                </form>
-                <div class="project-list"></div>
-            </section>
-        </aside>
+        <div class="grid-container">
 
-        <main>
-            <section class="todos">
-                <header class="todos-header">
-                    <h3>Todo Items for: <span id="active-project">None</span></h3>
-                </header>
-                <dialog id="todo-dialog">
-                    <form id="todo-form">
-                        <input type="text" id="title" name="title" placeholder="Add a todo item" required>
-                        <textarea name="description" id="description" cols="10" rows="3"
-                            placeholder="Description of todo item"></textarea>
-                        <input type="date" name="due-date" id="due-date">
-                        <select name="priorities" id="priorities">
-                            <option value="low" selected>Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                        </select>
-                        <textarea name="notes" id="notes" cols="10" rows="3" placeholder="Any notes..."></textarea>
-                        <button type="submit">Add Todo</button>
+            <aside>
+                <h3>Projects</h3>
+                <div class="add-project-input">
+                    <form id="project-form">
+                        <input type="text" name="project-name" id="project-name" placeholder="Project Name" required>
+                        <button id="project-btn" type="submit">Create</button>
                     </form>
-                </dialog>
-                <div class="todos-list"></div>
-            </section>
-        </main>
+                </div>
+                <section class="projects"></section>
+            </aside>
+
+            <main class="main-content">
+                <h3>Todos for <span class="active-project">None</span></h3>
+                <section class="todos"></section>
+            </main>
+
+        </div>
 
         <footer>
             <div class="copy">Copyright &copy; <em>factum</em> | D. Harrison 2026</div>
         </footer>
 
     </div>
-
 </body>
 
 </html>
