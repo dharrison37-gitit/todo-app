@@ -7,63 +7,17 @@ export const projectRenderer = (() => {
   const DEFAULT = "Default";
   let projects = stateManager.loadState();
   let activeProject = stateManager.loadCurrentIdx();
-  const projectList = document.querySelector(".projects");
-  const todoList = document.querySelector(".todos");
   const activeProjectTitle = document.querySelector(".active-project");
   const projectForm = document.querySelector("#project-form");
   const nameInput = document.querySelector("#project-name");
   const projectBtn = document.querySelector("#project-btn");
-  const fragment = document.createDocumentFragment();
+  const addTodoButton = document.querySelector(".add-todo");
 
   const render = () => {
-    projectList.replaceChildren();
-    todoList.replaceChildren();
+    renderProjects(projects);
+    renderTodos(projects[activeProject].todos);
 
-    projects.forEach((project) => {
-      const container = document.createElement("div");
-      container.classList.add("project-grid");
-
-      const projectItem = createProjectElement(project);
-      projectItem.setAttribute("data-id", projects.indexOf(project));
-      projectItem.classList.add("project-item");
-
-      const deleteButton = createProjectDeleteBtn();
-
-      deleteButton.addEventListener("click", () => {
-        // if (activeProject === 0) return;
-        projectController.deleteProject(projects.indexOf(project));
-      });
-
-      container.appendChild(projectItem);
-      if (project.name !== DEFAULT) container.appendChild(deleteButton);
-      fragment.appendChild(container);
-    });
-
-    projectList.appendChild(fragment);
-
-    projectList.addEventListener("click", (e) => {
-      const index = e.target.getAttribute("data-id");
-      if (!index) return;
-
-      activeProject = index;
-      stateManager.saveCurrentIdx(activeProject);
-
-      let activeProjectName = projects[index].name;
-
-      activeProjectTitle.textContent = activeProjectName;
-
-      if (activeProjectName !== DEFAULT) {
-        nameInput.value = activeProjectName;
-        projectBtn.textContent = "Update";
-      } else {
-        nameInput.value = "";
-        projectBtn.textContent = "Create";
-      }
-
-      // Loop over todos within clicked project and display them
-      projects[index].todos.forEach((todo) => console.log(todo.title));
-      displayActiveTodos(projects[index]);
-    });
+    renderActiveTodoTitle();
 
     projectForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -79,49 +33,96 @@ export const projectRenderer = (() => {
     });
   };
 
-  const createProjectElement = (project) => {
-    const item = document.createElement("div");
-    item.textContent = project.name;
-
-    return item;
+  const renderActiveTodoTitle = () => {
+    let activeProjectName = projects[activeProject].name;
+    activeProjectTitle.textContent = activeProjectName;
+    const addButton = createAddButton();
+    addButton.addEventListener("click", (e) => {
+      const dialog = document.querySelector(".todo-dialog");
+      dialog.showModal();
+    });
+    document.querySelector(".add-todo").appendChild(addButton);
   };
 
-  const createProjectDeleteBtn = () => {
-    const deleteBtn = document.createElement("a");
-    deleteBtn.href = "#";
-    deleteBtn.classList.add("delete-button");
-    deleteBtn.textContent = "X";
+  const createAddButton = () => {
+    const addButton = document.createElement("a");
+    addButton.classList.add("add-button");
+    addButton.href = "#";
+    addButton.textContent = "Add Todo";
+    addTodoButton.appendChild(addButton);
 
-    return deleteBtn;
+    return addButton;
   };
 
-  const displayActiveTodos = (project) => {
-    todoList.replaceChildren();
+  // KEEP CODE FOR PROJECT TEMPLATE
+  const renderProjects = (data) => {
+    const template = document.getElementById("project-template");
+    const container = document.getElementById("project-container");
+    container.replaceChildren();
 
-    project.todos.forEach((todo) => {
-      const todoItem = createTodoElement(todo);
-      todoList.appendChild(todoItem);
-      console.log(todo.title);
+    data.forEach((project) => {
+      const clone = template.content.cloneNode(true);
+
+      clone.querySelector(".project-header").setAttribute("data-id", projects.indexOf(project));
+
+      clone.querySelector('[data-field="name"]').textContent = project.name;
+      clone.querySelector(".delete-button").addEventListener("click", () => {
+        projectController.deleteProject(projects.indexOf(project));
+      });
+
+      // show the delete button only if not default proejct
+      if (project.name !== DEFAULT) {
+        clone.querySelector("#project-delete").style.display = "block";
+      }
+
+      clone.querySelector(".project-header").addEventListener("click", (e) => {
+        const index = e.target.getAttribute("data-id");
+        if (!index) return;
+
+        activeProject = index;
+        stateManager.saveCurrentIdx(activeProject);
+
+        let activeProjectName = projects[index].name;
+        activeProjectTitle.textContent = activeProjectName;
+
+        if (activeProjectName !== DEFAULT) {
+          nameInput.value = activeProjectName;
+          projectBtn.textContent = "Update";
+        } else {
+          nameInput.value = "";
+          projectBtn.textContent = "Create";
+        }
+
+        renderTodos(projects[activeProject].todos);
+      });
+
+      container.appendChild(clone);
     });
   };
 
-  const createTodoElement = (todo) => {
-    const container = document.createElement("div");
-    container.classList.add("todo-container");
-    const todoItem = document.createElement("div");
-    todoItem.classList.add("todo-item");
-    todoItem.textContent = todo.title;
-    container.appendChild(todoItem);
-    return container;
+  // KEEP CODE FOR TODO TEMPLATE
+  const renderTodos = (data) => {
+    const template = document.getElementById("todo-template");
+    const container = document.getElementById("todo-container");
+    container.replaceChildren();
+
+    data.forEach((todo) => {
+      const clone = template.content.cloneNode(true);
+
+      clone.querySelector('[data-field="title"]').textContent = todo.title;
+      clone.querySelector('[data-field="description"').textContent =
+        `Description: ${todo.description}`;
+      clone.querySelector('[data-field="due-date"]').textContent = `Due: ${todo.dueDate}`;
+      clone.querySelector('[data-field="priority"]').textContent = `Priority: ${todo.priority}`;
+      clone.querySelector('[data-field="notes"]').textContent = `Notes: ${todo.notes}`;
+
+      clone.querySelector(".delete-button").addEventListener("click", () => {
+        projectController.deleteTodo(todo.id);
+      });
+
+      container.appendChild(clone);
+    });
   };
 
   return { render };
 })();
-
-// ********************************************************************
-//
-// Need to have something hold state for the current project and only
-// change when new project is added or when selected in project list.
-// So maybe a getState() and setState() function in a state controller
-//
-// ********************************************************************

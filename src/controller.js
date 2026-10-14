@@ -1,4 +1,3 @@
-// import { createProject } from "./project.js";
 import { projectFactory } from "./project.js";
 import { createTodo } from "./todo.js";
 import { stateManager } from "./state-manager.js";
@@ -61,10 +60,11 @@ export const projectController = (() => {
 
   // const updateTodo = () => {};
 
-  // const deleteTodo = (todoIdx) => {
-  //   projects[currentProjectIndex].todos.splice(todoIdx, 1);
-  //   saveState();
-  // };
+  const deleteTodo = (todoIdx) => {
+    const currentProject = projects[currentProjectIndex];
+    currentProject.todos = currentProject.todos.filter((todo) => todo.id !== todoIdx);
+    saveState();
+  };
 
   const saveState = () => {
     stateManager.saveState(projects, currentProjectIndex);
@@ -74,14 +74,14 @@ export const projectController = (() => {
 
   const renderApp = () => {
     // FOR CONSOLE TESTING
-    console.clear();
-    if (projects)
-      projects.forEach((p) => {
-        console.log("PROJECT:", p.name);
-        if (!p.todos) return;
-        p.todos.forEach((t) => console.log("TODO:", t.title));
-      });
-    console.log(JSON.stringify(projects, null, 2));
+    // console.clear();
+    // if (projects)
+    //   projects.forEach((p) => {
+    //     console.log("PROJECT:", p.name);
+    //     if (!p.todos) return;
+    //     p.todos.forEach((t) => console.log("TODO:", t.title));
+    //   });
+    // console.log(JSON.stringify(projects, null, 2));
     //******************************************** */
 
     projectRenderer.render();
@@ -104,6 +104,6 @@ export const projectController = (() => {
     deleteProject,
     addTodo,
     // updateTodo,
-    // deleteTodo,
+    deleteTodo,
   };
 })();

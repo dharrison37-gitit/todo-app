@@ -26,15 +26,57 @@
                         <button id="project-btn" type="submit">Create</button>
                     </form>
                 </div>
-                <section class="projects"></section>
+                <div id="project-container"></div>
             </aside>
 
             <main class="main-content">
-                <h3>Todos for <span class="active-project">None</span></h3>
-                <section class="todos"></section>
+                <h3>Todos for <span class="active-project">None</span>&nbsp;<span class="add-todo"></span></h3>
+                <!-- <section class="todos"></section> -->
+                <div id="todo-container"></div>
             </main>
-
+            <dialog class="todo-dialog">
+                <form class="todo-form">
+                    <input type="text" name="title" id="title" placeholder="Title" required>
+                    <textarea name="description" id="description" cols="10" rows="3"
+                        placeholder="Descriptio"></textarea>
+                    <label for="due">Due:</label><input type="date" name="due" id="due">
+                    <select name="priority" id="priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                    <label for="completed">Completed</label><input type="checkbox" name="completed" id="completed">
+                </form>
+            </dialog>
         </div>
+
+        <!--TEMPLATES-->
+        <template id="project-template">
+            <div class="project-item">
+                <div class="project-name">
+                    <h3 data-field="name" class="project-header"></h3>
+                </div>
+                <div class="controls" data-if="true">
+                    <button id="project-delete" class="delete-button">X</button>
+                </div>
+            </div>
+        </template>
+
+        <template id="todo-template">
+            <h3 data-field="title" class="todo-header"></h3>
+            <div class="todo-details">
+                <div class="details">
+                    <p data-field="description"></p>
+                    <p data-field="due-date"></p>
+                    <p data-field="priority"></p>
+                    <p data-field="notes"></p>
+                </div>
+                <div id="controls">
+                    <button class="delete-button">X</button>
+                </div>
+            </div>
+        </template>
+        <!--END TEMPLATES-->
 
         <footer>
             <div class="copy">Copyright &copy; <em>factum</em> | D. Harrison 2026</div>
