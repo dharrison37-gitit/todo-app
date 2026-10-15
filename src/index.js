@@ -7,5 +7,3 @@ projectController;
 const img = document.createElement("img");
 img.src = Mask;
 document.querySelector(".logo").appendChild(img);
-
-// projectController.addTodo("Data new", "A descript", null, "low", "NA");

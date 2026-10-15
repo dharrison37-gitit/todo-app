@@ -29,8 +29,6 @@ export const projectFactory = (() => {
           todos: state.todos,
         };
       },
-      // name,
-      // todos: [],
     };
   };
   return { createProject };

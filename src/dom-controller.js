@@ -4,42 +4,81 @@ import { stateManager } from "./state-manager.js";
 export const projectRenderer = (() => {
   //
   //
-  const DEFAULT = "Default";
+  let editingId = null;
   let projects = stateManager.loadState();
   let activeProject = stateManager.loadCurrentIdx();
+
+  const DEFAULT = "Default";
   const activeProjectTitle = document.querySelector(".active-project");
   const projectForm = document.querySelector("#project-form");
+  const todoForm = document.querySelector("#todo-form");
   const nameInput = document.querySelector("#project-name");
-  const projectBtn = document.querySelector("#project-btn");
+  const projectButton = document.querySelector("#project-btn");
   const addTodoButton = document.querySelector(".add-todo");
+  const cancelButton = document.querySelector(".cancel-btn");
+  const dialog = document.querySelector(".todo-dialog");
 
   const render = () => {
+    projects = stateManager.loadState();
+    activeProject = stateManager.loadCurrentIdx();
     renderProjects(projects);
     renderTodos(projects[activeProject].todos);
-
     renderActiveTodoTitle();
 
     projectForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const formData = new FormData(projectForm);
 
-      if (projectBtn.textContent === "Update") {
-        projectController.updateProject(activeProject, formData.get("project-name"));
+      if (projectButton.textContent === "Update") {
+        projectController.updateProject(
+          stateManager.loadCurrentIdx(),
+          formData.get("project-name")
+        );
       } else {
         projectController.addProject(formData.get("project-name"));
       }
 
       window.location.reload();
     });
+
+    todoForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(todoForm);
+
+      const todo = {
+        title: formData.get("title"),
+        description: formData.get("description"),
+        dueDate: formData.get("due"),
+        priority: formData.get("priority"),
+        notes: formData.get("notes"),
+      };
+
+      if (editingId !== null) {
+        projectController.updateTodo(editingId, todo);
+      } else {
+        projectController.addTodo(todo);
+      }
+    });
+
+    projects.forEach((project) => {
+      project.todos.forEach((todo) => {
+        const el = document.querySelector(`[data-id="${todo.id}"]`);
+        if (todo.completed) el.classList.add("done");
+      });
+    });
   };
 
   const renderActiveTodoTitle = () => {
-    let activeProjectName = projects[activeProject].name;
+    let activeProjectName = projects[stateManager.loadCurrentIdx()].name;
     activeProjectTitle.textContent = activeProjectName;
     const addButton = createAddButton();
-    addButton.addEventListener("click", (e) => {
-      const dialog = document.querySelector(".todo-dialog");
+
+    addButton.addEventListener("click", () => {
       dialog.showModal();
+    });
+    cancelButton.addEventListener("click", () => {
+      dialog.close();
     });
     document.querySelector(".add-todo").appendChild(addButton);
   };
@@ -67,7 +106,8 @@ export const projectRenderer = (() => {
 
       clone.querySelector('[data-field="name"]').textContent = project.name;
       clone.querySelector(".delete-button").addEventListener("click", () => {
-        projectController.deleteProject(projects.indexOf(project));
+        if (confirm("Deletion confirmation?"))
+          projectController.deleteProject(projects.indexOf(project));
       });
 
       // show the delete button only if not default proejct
@@ -78,19 +118,19 @@ export const projectRenderer = (() => {
       clone.querySelector(".project-header").addEventListener("click", (e) => {
         const index = e.target.getAttribute("data-id");
         if (!index) return;
+        stateManager.saveCurrentIdx(index);
 
-        activeProject = index;
-        stateManager.saveCurrentIdx(activeProject);
+        activeProject = stateManager.loadCurrentIdx();
 
         let activeProjectName = projects[index].name;
         activeProjectTitle.textContent = activeProjectName;
 
         if (activeProjectName !== DEFAULT) {
           nameInput.value = activeProjectName;
-          projectBtn.textContent = "Update";
+          projectButton.textContent = "Update";
         } else {
           nameInput.value = "";
-          projectBtn.textContent = "Create";
+          projectButton.textContent = "Create";
         }
 
         renderTodos(projects[activeProject].todos);
@@ -108,16 +148,36 @@ export const projectRenderer = (() => {
 
     data.forEach((todo) => {
       const clone = template.content.cloneNode(true);
+      clone.querySelector('[data-id="0"]').setAttribute("data-id", todo.id);
 
       clone.querySelector('[data-field="title"]').textContent = todo.title;
-      clone.querySelector('[data-field="description"').textContent =
+      clone.querySelector('[data-field="description"]').textContent =
         `Description: ${todo.description}`;
       clone.querySelector('[data-field="due-date"]').textContent = `Due: ${todo.dueDate}`;
       clone.querySelector('[data-field="priority"]').textContent = `Priority: ${todo.priority}`;
       clone.querySelector('[data-field="notes"]').textContent = `Notes: ${todo.notes}`;
 
       clone.querySelector(".delete-button").addEventListener("click", () => {
-        projectController.deleteTodo(todo.id);
+        if (confirm("Deletion confirmation?")) projectController.deleteTodo(todo.id);
+      });
+
+      clone.querySelector(".todo-details").addEventListener("click", (e) => {
+        if (e.target && e.target.matches(".completed")) {
+          e.target.setAttribute("data-id", todo.id);
+          projectController.toggleCompleted(todo.id);
+        }
+      });
+
+      clone.querySelector(".update-button").addEventListener("click", () => {
+        editingId = todo.id;
+
+        document.querySelector("input[name='title']").value = todo.title;
+        document.querySelector("textarea[name='description'").value = todo.description;
+        document.querySelector("input[name='due']").value = todo.dueDate;
+        document.querySelector("select[name='priority']").value = todo.priority;
+        document.querySelector("textarea[name='notes']").value = todo.notes;
+
+        dialog.showModal();
       });
 
       container.appendChild(clone);

@@ -3,12 +3,12 @@ export const createTodo = (data = {}) => {
   const state = {
     projectId: data.projectId,
     id: data.id ?? crypto.randomUUID(),
-    title: data.title ?? "No Title Given",
-    description: data.description ?? "None description given.",
-    dueDate: data.dueDate ?? new Date(),
-    priority: data.priority ?? "low",
-    notes: data.notes ?? "No notes given",
-    completed: false,
+    title: data.title,
+    description: data.description ?? "None provided",
+    dueDate: data.dueDate,
+    priority: data.priority,
+    notes: data.notes ?? "None provided",
+    completed: data.completed ?? false,
   };
 
   // API
@@ -43,6 +43,7 @@ export const createTodo = (data = {}) => {
     toSaveFormat() {
       return {
         projectId: state.projectId,
+        id: state.id,
         title: state.title,
         description: state.description,
         dueDate: state.dueDate,

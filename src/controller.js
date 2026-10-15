@@ -37,11 +37,11 @@ export const projectController = (() => {
   };
 
   // TODO
-  const addTodo = (title, description, dueDate, priority, notes) => {
+  const addTodo = ({ title, description, dueDate, priority, notes }) => {
     if (projects[currentProjectIndex].todos.some((t) => t.title === title)) return;
 
     const newTodo = createTodo({
-      projectId: currentProjectIndex,
+      projectId: stateManager.loadCurrentIdx(),
       title,
       description,
       dueDate,
@@ -52,18 +52,36 @@ export const projectController = (() => {
     const currentProject = projects[currentProjectIndex];
     const hydratedProject = projectFactory.createProject(currentProject);
 
-    console.log(currentProject);
-
     hydratedProject.addTodo(newTodo);
     saveState();
   };
 
-  // const updateTodo = () => {};
+  const updateTodo = (todoToUpdateId, updatedTodo) => {
+    const currentProject = projects[stateManager.loadCurrentIdx()];
+    const currentProjectTodos = projects[stateManager.loadCurrentIdx()].todos;
+
+    const updated = currentProjectTodos.map((todo) =>
+      todo.id === todoToUpdateId ? { ...todo, ...updatedTodo } : todo
+    );
+
+    currentProject.todos = updated;
+    saveState();
+  };
 
   const deleteTodo = (todoIdx) => {
-    const currentProject = projects[currentProjectIndex];
+    const currentProject = projects[stateManager.loadCurrentIdx()];
     currentProject.todos = currentProject.todos.filter((todo) => todo.id !== todoIdx);
     saveState();
+  };
+
+  const toggleCompleted = (todoId) => {
+    let todos = projects[stateManager.loadCurrentIdx()].todos;
+    const todoToToggle = todos.filter((todo) => todo.id === todoId);
+
+    const toggledTodo = createTodo({ id: todoId, ...todoToToggle[0] });
+    toggledTodo.toggleComplete();
+
+    updateTodo(todoId, toggledTodo);
   };
 
   const saveState = () => {
@@ -73,17 +91,6 @@ export const projectController = (() => {
   };
 
   const renderApp = () => {
-    // FOR CONSOLE TESTING
-    // console.clear();
-    // if (projects)
-    //   projects.forEach((p) => {
-    //     console.log("PROJECT:", p.name);
-    //     if (!p.todos) return;
-    //     p.todos.forEach((t) => console.log("TODO:", t.title));
-    //   });
-    // console.log(JSON.stringify(projects, null, 2));
-    //******************************************** */
-
     projectRenderer.render();
   };
 
@@ -91,7 +98,6 @@ export const projectController = (() => {
     currentProjectIndex = stateManager.loadCurrentIdx();
     if (projects.length === 0) {
       addProject(DEFAULT);
-      window.location.reload();
     }
     renderApp();
   };
@@ -103,7 +109,8 @@ export const projectController = (() => {
     updateProject,
     deleteProject,
     addTodo,
-    // updateTodo,
+    updateTodo,
     deleteTodo,
+    toggleCompleted,
   };
 })();

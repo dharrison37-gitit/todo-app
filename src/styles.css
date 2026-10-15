@@ -28,7 +28,7 @@ body {
 }
 
 .container {
-  width: 80vw;
+  width: 95vw;
   padding: 10px;
   margin: 0 auto;
 }
@@ -47,7 +47,13 @@ header {
   }
 }
 
+.bottom-space {
+  padding: 1rem 0.25rem;
+  margin-bottom: 1.2rem;
+}
+
 .grid-container {
+  min-height: 80vh;
   background-color: rgb(135 206 250 / 0.25);
   display: grid;
   grid-template-columns: 2fr 4fr;
@@ -62,7 +68,10 @@ header {
   margin: 5px auto;
 }
 
-input[type="text"] {
+input,
+textarea,
+select,
+input[type="checkbox"] {
   font-size: 1.2rem;
   line-height: 1.5;
   padding: 0.75rem 2rem;
@@ -71,12 +80,22 @@ input[type="text"] {
 }
 
 button {
+  width: 10rem;
   background-color: rgb(0 75 190 / 1);
   color: rgb(255 255 255 / 1);
   font-size: 1.2rem;
   border: none;
   padding: 1rem 2rem;
   cursor: pointer;
+}
+
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  align-items: center;
+  justify-items: center;
+  margin-top: 10px;
 }
 
 .projects {
@@ -95,44 +114,58 @@ button {
 }
 
 .delete-button {
+  background-color: rgb(255 0 0 / 1);
+}
+
+.update-button {
+  background-color: rgb(0 150 0 / 1);
+}
+
+.delete-button,
+.update-button {
   width: 25px;
   font-size: 0.75rem;
   display: block;
-  background-color: red;
-  color: white;
+  color: rgb(255 255 255 / 1);
   font-weight: 777;
-  text-decoration: none;
   text-align: center;
   border-radius: 5px;
   padding: 5px;
-  margin: auto;
+  margin: 5px auto;
 }
 
 .add-button {
   width: 100px;
   display: inline-block;
-  background-color: rgb(14 105 14 / 1);
+  background-color: rgb(0 150 0 / 1);
   color: rgb(255 255 255 / 1);
   text-align: center;
   text-decoration: none;
 }
 
 .project-item {
-  /* background-color: rgb(34 94 56 / 0.25); */
+  background-color: rgb(77 77 77 / 0.75);
+  color: rgb(255 255 255 / 1);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+  margin: 8px auto;
+}
+
+.project-header {
   padding: 8px;
 }
 
-.project-item:hover {
+.project-header:hover {
   cursor: pointer;
   background-color: rgb(200 200 20 / 1);
+  color: rgb(0 0 0 / 1);
   font-weight: 777;
 }
 
 #project-delete {
   display: none;
+  margin-right: 1rem;
 }
 
 .todo-details {
@@ -140,12 +173,29 @@ button {
   color: rgb(255 255 255 / 1);
   padding: 8px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 4fr 1fr 1fr;
+  align-items: center;
+  justify-items: start;
+}
+
+.completed {
+  display: grid;
+  justify-items: center;
+}
+
+.done {
+  background-color: green;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
 }
 
 .details {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 4fr 2fr;
+  gap: 10px;
 }
 
 .controls {
@@ -164,4 +214,18 @@ footer {
 
 .active {
   background-color: yellow;
+}
+
+dialog {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(77 77 77 / 0.5);
+}
+
+#todo-form {
+  width: 500px;
+  background-color: rgb(135 206 250 / 1);
+  display: grid;
+  padding: 50px;
+  margin: 100px auto;
 }
