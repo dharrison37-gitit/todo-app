@@ -11,7 +11,7 @@ export const projectRenderer = (() => {
   const activeProjectTitle = document.querySelector(".active-project");
   const projectForm = document.querySelector("#project-form");
   const todoForm = document.querySelector("#todo-form");
-  // const nameInput = document.querySelector("#project-name");
+  const nameInput = document.querySelector("#project-name");
   const projectButton = document.querySelector("#project-btn");
   const addTodoButton = document.querySelector(".add-todo");
   const cancelButton = document.querySelector(".cancel-btn");
@@ -109,9 +109,31 @@ export const projectRenderer = (() => {
           projectController.deleteProject(projects.indexOf(project));
       });
 
+      // Update the project name
+      clone.querySelector(".update-button").addEventListener("click", () => {
+        let activeProjectName = projects[stateManager.loadCurrentIdx()].name;
+        activeProjectTitle.textContent = activeProjectName;
+
+        if (activeProjectName !== DEFAULT) {
+          nameInput.value = activeProjectName;
+          projectButton.textContent = "Update";
+        } else {
+          nameInput.value = "";
+          projectButton.textContent = "Create";
+        }
+      });
+
       // show the delete button only if not default proejct
       if (project.name !== DEFAULT) {
         clone.querySelector("#project-delete").style.display = "block";
+      } else {
+        clone.querySelector("#project-delete").style.display = "none";
+      }
+
+      if (project.name !== DEFAULT) {
+        clone.querySelector("#project-update").style.display = "block";
+      } else {
+        clone.querySelector("#project-update").style.display = "none";
       }
 
       // When you select a project set active
@@ -123,14 +145,15 @@ export const projectRenderer = (() => {
         let activeProjectName = projects[index].name;
         activeProjectTitle.textContent = activeProjectName;
 
-        // if (stateManager.loadCurrentIdx()Name !== DEFAULT) {
-        //   nameInput.value = stateManager.loadCurrentIdx()Name;
+        // if (activeProjectName !== DEFAULT) {
+        //   nameInput.value = activeProjectName;
         //   projectButton.textContent = "Update";
         // } else {
         //   nameInput.value = "";
         //   projectButton.textContent = "Create";
         // }
 
+        window.location.reload();
         renderTodos(projects[stateManager.loadCurrentIdx()].todos);
       });
 

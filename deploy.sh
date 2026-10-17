@@ -16,7 +16,7 @@ function build {
 }
 
 function deploy {
-    git add dist -f 
+    git add dist -f
     git commit -m "Deployment commit"
     git subtree push --prefix dist origin $PAGES
     echo "Deploying to $PAGES"
