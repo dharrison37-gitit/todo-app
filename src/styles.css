@@ -188,7 +188,8 @@ button {
 }
 
 .done {
-  background-color: green;
+  background-color: lightgray;
+  text-decoration: line-through;
 }
 
 input[type="checkbox"] {
