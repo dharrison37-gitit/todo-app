@@ -5,6 +5,10 @@
   /* border: 1px dotted; */
 }
 
+.completed-container {
+  border: 1px solid;
+}
+
 :root {
   font-size: 16px;
   font-family:

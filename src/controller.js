@@ -18,6 +18,7 @@ export const projectController = (() => {
 
     projects.push(savedFormat);
     currentProjectIndex = projects.indexOf(savedFormat);
+    stateManager.saveCurrentIdx(currentProjectIndex);
     saveState();
   };
 
@@ -33,6 +34,7 @@ export const projectController = (() => {
 
     projects = projects.filter((project) => projects.indexOf(project) !== projectId);
     currentProjectIndex--;
+    stateManager.saveCurrentIdx(currentProjectIndex);
     saveState();
   };
 
@@ -58,9 +60,9 @@ export const projectController = (() => {
 
   const updateTodo = (todoToUpdateId, updatedTodo) => {
     const currentProject = projects[stateManager.loadCurrentIdx()];
-    const currentProjectTodos = projects[stateManager.loadCurrentIdx()].todos;
+    // const currentProjectTodos = projects[stateManager.loadCurrentIdx()].todos;
 
-    const updated = currentProjectTodos.map((todo) =>
+    const updated = currentProject.todos.map((todo) =>
       todo.id === todoToUpdateId ? { ...todo, ...updatedTodo } : todo
     );
 
@@ -81,11 +83,13 @@ export const projectController = (() => {
     const toggledTodo = createTodo({ id: todoId, ...todoToToggle[0] });
     toggledTodo.toggleComplete();
 
+    console.log(toggledTodo.completed);
+
     updateTodo(todoId, toggledTodo);
   };
 
   const saveState = () => {
-    stateManager.saveState(projects, currentProjectIndex);
+    stateManager.saveState(projects);
     window.location.reload();
     renderApp();
   };

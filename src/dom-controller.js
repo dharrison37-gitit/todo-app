@@ -6,13 +6,12 @@ export const projectRenderer = (() => {
   //
   let editingId = null;
   let projects = stateManager.loadState();
-  let activeProject = stateManager.loadCurrentIdx();
 
   const DEFAULT = "Default";
   const activeProjectTitle = document.querySelector(".active-project");
   const projectForm = document.querySelector("#project-form");
   const todoForm = document.querySelector("#todo-form");
-  const nameInput = document.querySelector("#project-name");
+  // const nameInput = document.querySelector("#project-name");
   const projectButton = document.querySelector("#project-btn");
   const addTodoButton = document.querySelector(".add-todo");
   const cancelButton = document.querySelector(".cancel-btn");
@@ -20,9 +19,8 @@ export const projectRenderer = (() => {
 
   const render = () => {
     projects = stateManager.loadState();
-    activeProject = stateManager.loadCurrentIdx();
     renderProjects(projects);
-    renderTodos(projects[activeProject].todos);
+    renderTodos(projects[stateManager.loadCurrentIdx()].todos);
     renderActiveTodoTitle();
 
     projectForm.addEventListener("submit", (e) => {
@@ -37,7 +35,6 @@ export const projectRenderer = (() => {
       } else {
         projectController.addProject(formData.get("project-name"));
       }
-
       window.location.reload();
     });
 
@@ -61,11 +58,13 @@ export const projectRenderer = (() => {
       }
     });
 
-    projects.forEach((project) => {
-      project.todos.forEach((todo) => {
-        const el = document.querySelector(`[data-id="${todo.id}"]`);
-        if (todo.completed) el.classList.add("done");
-      });
+    projects[stateManager.loadCurrentIdx()].todos.forEach((todo) => {
+      if (todo.completed) {
+        console.log(todo.id, "completed");
+        const id = document.querySelector(`[data-id="${todo.id}"]`);
+        console.log(id, "completed");
+        id.classList.toggle("done");
+      }
     });
   };
 
@@ -115,25 +114,24 @@ export const projectRenderer = (() => {
         clone.querySelector("#project-delete").style.display = "block";
       }
 
+      // When you select a project set active
       clone.querySelector(".project-header").addEventListener("click", (e) => {
         const index = e.target.getAttribute("data-id");
         if (!index) return;
         stateManager.saveCurrentIdx(index);
 
-        activeProject = stateManager.loadCurrentIdx();
-
         let activeProjectName = projects[index].name;
         activeProjectTitle.textContent = activeProjectName;
 
-        if (activeProjectName !== DEFAULT) {
-          nameInput.value = activeProjectName;
-          projectButton.textContent = "Update";
-        } else {
-          nameInput.value = "";
-          projectButton.textContent = "Create";
-        }
+        // if (stateManager.loadCurrentIdx()Name !== DEFAULT) {
+        //   nameInput.value = stateManager.loadCurrentIdx()Name;
+        //   projectButton.textContent = "Update";
+        // } else {
+        //   nameInput.value = "";
+        //   projectButton.textContent = "Create";
+        // }
 
-        renderTodos(projects[activeProject].todos);
+        renderTodos(projects[stateManager.loadCurrentIdx()].todos);
       });
 
       container.appendChild(clone);
@@ -159,13 +157,14 @@ export const projectRenderer = (() => {
 
       clone.querySelector(".delete-button").addEventListener("click", () => {
         if (confirm("Deletion confirmation?")) projectController.deleteTodo(todo.id);
+        renderTodos(projects[stateManager.loadCurrentIdx()].todos);
       });
 
-      clone.querySelector(".todo-details").addEventListener("click", (e) => {
-        if (e.target && e.target.matches(".completed")) {
-          e.target.setAttribute("data-id", todo.id);
-          projectController.toggleCompleted(todo.id);
-        }
+      // Toogle Todo Completed
+      clone.querySelector(".completed").addEventListener("click", (e) => {
+        e.target.parentElement.setAttribute("data-id", todo.id);
+        console.log(e.target.getAttribute("data-id"));
+        projectController.toggleCompleted(todo.id);
       });
 
       clone.querySelector(".update-button").addEventListener("click", () => {
