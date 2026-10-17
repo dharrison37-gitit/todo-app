@@ -60,7 +60,6 @@ export const projectController = (() => {
 
   const updateTodo = (todoToUpdateId, updatedTodo) => {
     const currentProject = projects[stateManager.loadCurrentIdx()];
-    // const currentProjectTodos = projects[stateManager.loadCurrentIdx()].todos;
 
     const updated = currentProject.todos.map((todo) =>
       todo.id === todoToUpdateId ? { ...todo, ...updatedTodo } : todo
@@ -82,8 +81,6 @@ export const projectController = (() => {
 
     const toggledTodo = createTodo({ id: todoId, ...todoToToggle[0] });
     toggledTodo.toggleComplete();
-
-    console.log(toggledTodo.completed);
 
     updateTodo(todoId, toggledTodo);
   };

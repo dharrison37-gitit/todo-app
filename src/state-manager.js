@@ -5,7 +5,6 @@ export const stateManager = (() => {
 
   const saveState = (projects) => {
     localStorage.setItem(PROJECT, JSON.stringify(projects));
-    // localStorage.setItem(CURRENT_IDX, currentIndex);
   };
 
   const loadState = () => {

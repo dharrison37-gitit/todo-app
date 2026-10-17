@@ -3,7 +3,6 @@ import { stateManager } from "./state-manager.js";
 
 export const projectRenderer = (() => {
   //
-  //
   let editingId = null;
   let projects = stateManager.loadState();
 
@@ -60,9 +59,7 @@ export const projectRenderer = (() => {
 
     projects[stateManager.loadCurrentIdx()].todos.forEach((todo) => {
       if (todo.completed) {
-        console.log(todo.id, "completed");
         const id = document.querySelector(`[data-id="${todo.id}"]`);
-        console.log(id, "completed");
         id.classList.toggle("done");
       }
     });
@@ -123,7 +120,7 @@ export const projectRenderer = (() => {
         }
       });
 
-      // show the delete button only if not default proejct
+      // show the delete button only if NOT default project
       if (project.name !== DEFAULT) {
         clone.querySelector("#project-delete").style.display = "block";
       } else {
@@ -144,14 +141,6 @@ export const projectRenderer = (() => {
 
         let activeProjectName = projects[index].name;
         activeProjectTitle.textContent = activeProjectName;
-
-        // if (activeProjectName !== DEFAULT) {
-        //   nameInput.value = activeProjectName;
-        //   projectButton.textContent = "Update";
-        // } else {
-        //   nameInput.value = "";
-        //   projectButton.textContent = "Create";
-        // }
 
         window.location.reload();
         renderTodos(projects[stateManager.loadCurrentIdx()].todos);
@@ -186,7 +175,6 @@ export const projectRenderer = (() => {
       // Toogle Todo Completed
       clone.querySelector(".completed").addEventListener("click", (e) => {
         e.target.parentElement.setAttribute("data-id", todo.id);
-        console.log(e.target.getAttribute("data-id"));
         projectController.toggleCompleted(todo.id);
       });
 
