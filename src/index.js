@@ -1,5 +1,6 @@
 import "./styles.css";
-import Mask from "./black-mask-212kib.svg";
+import Mask from "./images/black-mask-212kib.svg";
+
 import { projectController } from "./controller.js";
 
 projectController;

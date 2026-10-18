@@ -63,6 +63,16 @@ export const projectRenderer = (() => {
         id.classList.toggle("done");
       }
     });
+
+    projects.forEach((project) => {
+      const idx = projects.indexOf(project);
+      const activeContainer = document.querySelector(`[data-id="${idx}"]`);
+      if (idx === stateManager.loadCurrentIdx()) {
+        activeContainer.classList.add("active");
+      } else {
+        activeContainer.classList.remove("active");
+      }
+    });
   };
 
   const renderActiveTodoTitle = () => {
@@ -120,16 +130,12 @@ export const projectRenderer = (() => {
         }
       });
 
-      // show the delete button only if NOT default project
+      // Show the delete button only if NOT default project
       if (project.name !== DEFAULT) {
         clone.querySelector("#project-delete").style.display = "block";
-      } else {
-        clone.querySelector("#project-delete").style.display = "none";
-      }
-
-      if (project.name !== DEFAULT) {
         clone.querySelector("#project-update").style.display = "block";
       } else {
+        clone.querySelector("#project-delete").style.display = "none";
         clone.querySelector("#project-update").style.display = "none";
       }
 

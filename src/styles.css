@@ -127,14 +127,15 @@ button {
 
 .delete-button,
 .update-button {
-  width: 25px;
-  font-size: 0.75rem;
   display: block;
+  min-height: 30px;
+  width: 30px;
+  font-size: 0.75rem;
   color: rgb(255 255 255 / 1);
   font-weight: 777;
   text-align: center;
   border-radius: 5px;
-  padding: 5px;
+  padding: 2px;
   margin: 5px auto;
 }
 
@@ -151,7 +152,7 @@ button {
   background-color: rgb(77 77 77 / 0.75);
   color: rgb(255 255 255 / 1);
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 3fr .75fr;
   gap: 10px;
   margin: 8px auto;
 }
@@ -162,7 +163,7 @@ button {
 
 .project-header:hover {
   cursor: pointer;
-  background-color: rgb(200 200 20 / 1);
+  background-color: rgb(255 255 0 / 1);
   color: rgb(0 0 0 / 1);
   font-weight: 777;
 }
@@ -191,6 +192,7 @@ button {
 .done {
   background-color: lightgray;
   text-decoration: line-through;
+  color: rgb(0 0 0 / 1)
 }
 
 input[type="checkbox"] {
@@ -206,6 +208,13 @@ input[type="checkbox"] {
 
 .controls {
   display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: end;
+}
+
+.project-controls {
+  display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
   justify-items: center;
@@ -219,7 +228,8 @@ footer {
 }
 
 .active {
-  background-color: yellow;
+  background-color: rgb(255 255 0 / 1);
+  color: rgb(0 0 0 / 1);
 }
 
 dialog {
@@ -234,4 +244,12 @@ dialog {
   display: grid;
   padding: 50px;
   margin: 100px auto;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
 }

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 
 <body>
@@ -62,9 +63,13 @@
                 <div class="project-name">
                     <h3 data-field="name" class="project-header"></h3>
                 </div>
-                <div class="controls">
-                    <button id="project-update" class="update-button">?</button>
-                    <button id="project-delete" class="delete-button">X</button>
+                <div class="project-controls">
+                    <button id="project-update" class="update-button">
+                        <i class="material-icons">edit_note</i>
+                    </button>
+                    <button id="project-delete" class="delete-button">
+                        <i class="material-icons">delete</i>
+                    </button>
                 </div>
             </div>
         </template>
@@ -79,8 +84,12 @@
                     <p data-field="notes"></p>
                 </div>
                 <div id="controls">
-                    <button class="delete-button">X</button>
-                    <button class="update-button">?</button>
+                    <button class="delete-button">
+                        <i class="material-icons">delete</i>
+                    </button>
+                    <button class="update-button">
+                        <i class="material-icons">edit_note</i>
+                    </button>
                 </div>
                 <div class="completed-container">
                     <button class="completed">
@@ -94,7 +103,6 @@
         <footer>
             <div class="copy">Copyright &copy; <em>factum</em> | D. Harrison 2026</div>
         </footer>
-
     </div>
 </body>
 
