@@ -110,6 +110,7 @@ export const projectRenderer = (() => {
       const clone = template.content.cloneNode(true);
 
       clone.querySelector(".project-header").setAttribute("data-id", projects.indexOf(project));
+      clone.querySelector(".update-button").setAttribute("data-id", projects.indexOf(project));
 
       clone.querySelector('[data-field="name"]').textContent = project.name;
       clone.querySelector(".delete-button").addEventListener("click", () => {
@@ -118,8 +119,20 @@ export const projectRenderer = (() => {
       });
 
       // Update the project name
-      clone.querySelector(".update-button").addEventListener("click", () => {
-        let activeProjectName = projects[stateManager.loadCurrentIdx()].name;
+      const canEdit =
+        parseInt(clone.querySelector(".project-header").getAttribute("data-id")) ===
+        stateManager.loadCurrentIdx();
+      const activeProjectName = projects[stateManager.loadCurrentIdx()].name;
+
+      // Prevent edit button from working if it's not current project
+      if (canEdit && activeProjectName !== DEFAULT) {
+        clone.querySelector(".update-button").disabled = false;
+      } else {
+        clone.querySelector(".update-button").disabled = true;
+      }
+
+      clone.querySelector(".update-button").addEventListener("click", (e) => {
+        console.log(e.target.parentElement.getAttribute("data-id"));
         activeProjectTitle.textContent = activeProjectName;
 
         if (activeProjectName !== DEFAULT) {
