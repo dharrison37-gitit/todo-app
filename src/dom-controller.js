@@ -81,6 +81,7 @@ export const projectRenderer = (() => {
     const addButton = createAddButton();
 
     addButton.addEventListener("click", () => {
+      todoForm.reset();
       dialog.showModal();
     });
     cancelButton.addEventListener("click", () => {
@@ -141,6 +142,7 @@ export const projectRenderer = (() => {
 
       // When you select a project set active
       clone.querySelector(".project-header").addEventListener("click", (e) => {
+        projectForm.reset();
         const index = e.target.getAttribute("data-id");
         if (!index) return;
         stateManager.saveCurrentIdx(index);
